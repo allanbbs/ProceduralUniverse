@@ -77,16 +77,16 @@ while(1):
 			lehmer = seed
 			color = Lehmer()%5
 			radius = Lehmer()%7 + 1
-			isS = Lehmer()%1200 + 1 == 1
+			isS = Lehmer()%400 + 1 == 1
 			if(isS):
-				pygame.draw.circle(window, (255,255,255), (x+5,y+5), radius)
+				pygame.draw.circle(window, startcolors[color], (x+5,y+5), radius)
 				if(w_coord == x and z_coord==y):
 					pygame.draw.circle(window, (255,0,0), ((w*resolution)+5,(z*resolution)+5), radius)
-					if((w_coord,z_coord) not in bro.keys()):
-						bro[(w_coord,z_coord)] = "KNOW STAR"
+					if((w_coord+galaxy_offset[0],z_coord+galaxy_offset[1]) not in bro.keys()):
+						bro[(w_coord+galaxy_offset[0],z_coord+galaxy_offset[1])] = "KNOW STAR"
 					#pygame.draw.circle(window, (255,0,0), ((w*resolution)+5,(z*resolution)+5), 10)
 					else:
-						print(bro[(w_coord,z_coord)])
+						print(bro[(w_coord+galaxy_offset[0],z_coord+galaxy_offset[1])])
 						
 	end = time.time()
 
