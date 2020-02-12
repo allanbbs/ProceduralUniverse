@@ -30,11 +30,11 @@ def Lehmer():
 	tmp = m1*0x12fad5c9
 	m2 = (tmp>>32) ^ tmp
 	return m2
-width = 800
-height = 800
+width = 1000
+height = 1000
 WHITE = (255,255,255)
 BLACK = (0,0,0)
-resolution = 20
+resolution = 10
 SPEED = 100
 row = height//resolution
 col = width//resolution
@@ -54,18 +54,19 @@ while(1):
 			if event.key == pygame.K_q:
 				pygame.quit()
 				exit()
-			if event.key == pygame.K_a:
-				galaxy_offset[0]-=SPEED
-			if event.key == pygame.K_d:
-				galaxy_offset[0]+=SPEED
-			if event.key == pygame.K_w:
-				galaxy_offset[1]-=SPEED
-			if event.key == pygame.K_s:
-				galaxy_offset[1]+=SPEED
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			w,z = event.pos
 			w//=resolution
 			z//=resolution
+	pressed = pygame.key.get_pressed()
+	if pressed[pygame.K_a]:
+		galaxy_offset[0]-=SPEED
+	if pressed[pygame.K_d]:
+		galaxy_offset[0]+=SPEED
+	if pressed[pygame.K_w]:
+		galaxy_offset[1]-=SPEED
+	if pressed[pygame.K_s]:
+		galaxy_offset[1]+=SPEED
 	start = time.time()
 	for i in range(row):
 		for j in range(col):
@@ -76,17 +77,18 @@ while(1):
 			lehmer = seed
 			color = Lehmer()%5
 			radius = Lehmer()%7 + 1
-			isS = Lehmer()%30 + 1 == 1
+			isS = Lehmer()%1200 + 1 == 1
 			if(isS):
 				pygame.draw.circle(window, (255,255,255), (x+5,y+5), radius)
 				if(w_coord == x and z_coord==y):
+					pygame.draw.circle(window, (255,0,0), ((w*resolution)+5,(z*resolution)+5), radius)
 					if((w_coord,z_coord) not in bro.keys()):
 						bro[(w_coord,z_coord)] = "KNOW STAR"
 					#pygame.draw.circle(window, (255,0,0), ((w*resolution)+5,(z*resolution)+5), 10)
 					else:
-						#print(bro[(w_coord,z_coord)])
-						pass
+						print(bro[(w_coord,z_coord)])
+						
 	end = time.time()
 
-	print(bcolors.OKBLUE + "Done" + bcolors.ENDC + "  " + bcolors.WARNING + str(end-start) + bcolors.ENDC)
+	#print(bcolors.OKBLUE + "Done" + bcolors.ENDC + "  " + bcolors.WARNING + str(end-start) + bcolors.ENDC)
 	pygame.display.flip()
