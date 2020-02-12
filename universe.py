@@ -33,15 +33,21 @@ def save_exit(dic):
 	start = time.time()
 	file = open("StarLog.txt","w+")
 	for key,value in dic.items():
-		file.write(str(key[0]) + " " + str(key[1]) + " " + value + "\n")
+		file.write(str(key[0]) + " " + str(key[1]) +"\n")
+		file.write(value + "\n")
 	file.close()
 	
 	print(time.time() - start)
 def load_log(dic):
 	file = open("StarLog.txt","r")
+	i = 0
 	for line in file.readlines():
-		args = line.split()
-		dic[(float(args[0]),float(args[1]))] = args[2]
+		if(i%2 == 0):
+			args = line.split()
+		else:
+			name = line.strip("\n")
+			dic[(float(args[0]),float(args[1]))] = name
+		i+=1
 	file.close()
 		
 
