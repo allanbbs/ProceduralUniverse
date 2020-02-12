@@ -12,7 +12,6 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
-
 startcolors ={
 	0 : (255,255,255),
 	1 : (255,0,0),
@@ -30,6 +29,23 @@ def Lehmer():
 	tmp = m1*0x12fad5c9
 	m2 = (tmp>>32) ^ tmp
 	return m2
+def save_exit(dic):
+	start = time.time()
+	file = open("StarLog.txt","w+")
+	for key,value in dic.items():
+		file.write(str(key[0]) + " " + str(key[1]) + " " + value + "\n")
+	file.close()
+	
+	print(time.time() - start)
+def load_log(dic):
+	file = open("StarLog.txt","r")
+	for line in file.readlines():
+		args = line.split()
+		dic[(float(args[0]),float(args[1]))] = args[2]
+	file.close()
+		
+
+
 width = 1000
 height = 1000
 WHITE = (255,255,255)
@@ -42,9 +58,13 @@ pygame.init()
 window = pygame.display.set_mode((width,height))
 fps = pygame.time.Clock()
 bro ={}
+load_log(bro);
 ellapsedtime = 0
 w,z=0,0
-while(1):
+verify = 1
+for i,j in bro.items():
+	print(i,j)
+while(1 and verify):
 	w,z = 0,0
 	fps.tick(12)
 	ellapsedtime = pygame.time.get_ticks() - ellapsedtime
@@ -53,11 +73,13 @@ while(1):
 		if event.type==pygame.KEYDOWN:
 			if event.key == pygame.K_q:
 				pygame.quit()
-				exit()
+				verify = 0
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			w,z = event.pos
 			w//=resolution
 			z//=resolution
+	if(not verify):
+		break
 	pressed = pygame.key.get_pressed()
 	if pressed[pygame.K_a]:
 		galaxy_offset[0]-=SPEED
@@ -83,7 +105,8 @@ while(1):
 				if(w_coord == x and z_coord==y):
 					pygame.draw.circle(window, (255,0,0), ((w*resolution)+5,(z*resolution)+5), radius)
 					if((w_coord+galaxy_offset[0],z_coord+galaxy_offset[1]) not in bro.keys()):
-						bro[(w_coord+galaxy_offset[0],z_coord+galaxy_offset[1])] = "KNOW STAR"
+						name = str(input("Enter star name:\n"))
+						bro[(w_coord+galaxy_offset[0],z_coord+galaxy_offset[1])] = name
 					#pygame.draw.circle(window, (255,0,0), ((w*resolution)+5,(z*resolution)+5), 10)
 					else:
 						print(bro[(w_coord+galaxy_offset[0],z_coord+galaxy_offset[1])])
@@ -92,3 +115,10 @@ while(1):
 
 	#print(bcolors.OKBLUE + "Done" + bcolors.ENDC + "  " + bcolors.WARNING + str(end-start) + bcolors.ENDC)
 	pygame.display.flip()
+save_exit(bro)
+
+
+
+
+
+
