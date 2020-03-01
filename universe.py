@@ -71,8 +71,9 @@ verify = 1
 for i,j in bro.items():
 	print(i,j)
 while(1 and verify):
+	pygame.event.pump()
 	w,z = 0,0
-	fps.tick(12)
+	fps.tick(24)
 	ellapsedtime = pygame.time.get_ticks() - ellapsedtime
 	window.fill(pygame.Color(0,0,0))
 	for event in pygame.event.get():
